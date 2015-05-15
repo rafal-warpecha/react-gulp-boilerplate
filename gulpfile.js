@@ -25,6 +25,8 @@ var autoprefixer = require('gulp-autoprefixer');
 
 var htmlreplace = require('gulp-html-replace');
 
+var karma = require('karma').server;
+
 var browserSync = require('browser-sync');
 
 var env = process.env.NODE_ENV || 'development';
@@ -109,6 +111,14 @@ gulp.task('build:templates', function() {
 
 gulp.task('reload:templates', ['build:templates'], function() {
     browserSync.reload();
+});
+
+gulp.task('test', function(done) {
+    karma.start({
+        configFile: __dirname + '/karma.conf.js'
+    }, function() {
+        done();
+    });
 });
 
 gulp.task('clean', function(callback) {

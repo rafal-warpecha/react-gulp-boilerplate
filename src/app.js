@@ -10,6 +10,9 @@ class App {
     run() {
         React.render(React.createElement(AppContainer, null), this.node);
     }
+    test() {
+        return 'Test';
+    }
 }
 
 export default App;
