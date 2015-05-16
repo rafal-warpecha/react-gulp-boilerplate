@@ -9,7 +9,7 @@ describe('AppContainer', () => {
     let component;
 
     beforeEach(() => {
-        component = TestUtils.renderIntoDocument(<AppContainer />);
+        component = TestUtils.renderIntoDocument(React.createElement(AppContainer));
     });
 
     it('should display correct value', () => {
