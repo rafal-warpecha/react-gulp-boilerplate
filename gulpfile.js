@@ -85,6 +85,8 @@ gulp.task('build:styles', function() {
     return gulp.src(filePaths.src.styles.all)
         .pipe(less({
             paths: [path.join(__dirname, 'less', 'includes')]
+        }).on('error', function(err) {
+            gutil.log(gutil.colors.red(err));
         }))
         .pipe(autoprefixer({
             browsers: ['last 2 versions']
@@ -122,7 +124,7 @@ gulp.task('test', function(done) {
 });
 
 gulp.task('clean', function(callback) {
-    del('build/', null, callback);
+    del(filePaths.dest, null, callback);
 });
 
 gulp.task('browser-sync', function() {
@@ -135,13 +137,23 @@ gulp.task('browser-sync', function() {
 });
 
 gulp.task('watch', function() {
-    runSequence('clean', 'lint:scripts', ['build:scripts', 'build:styles', 'build:templates'], 'browser-sync');
+    var sequenceCallback = function() {
+        gulp.watch(filePaths.src.scripts.all, ['reload:scripts']);
+        gulp.watch(filePaths.src.styles.all, ['reload:styles']);
+        gulp.watch(filePaths.src.teplates.entry, ['reload:templates']);
 
-    gulp.watch(filePaths.src.scripts.all, ['reload:scripts']);
-    gulp.watch(filePaths.src.styles.all, ['reload:styles']);
-    gulp.watch(filePaths.src.teplates.entry, ['reload:templates']);
+        gutil.log(gutil.colors.green('Watching for changes...'));
+    };
 
-    gutil.log(gutil.colors.green('Watching for changes...'));
+    runSequence('clean',
+        'lint:scripts',
+        ['build:scripts',
+            'build:styles',
+            'build:templates'
+        ],
+        'browser-sync',
+        sequenceCallback
+    );
 });
 
 gulp.task('default', ['watch']);
