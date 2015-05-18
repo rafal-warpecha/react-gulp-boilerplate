@@ -4,4 +4,4 @@ Simple gulp boilerplate using Browserify and Babel for react applications. Karma
 Run `npm install` and `gulp` to start browser (you need to have gulp installed globally).
 Run `gulp test` to start Karma.
 #License
-MIT
+WTFPL
