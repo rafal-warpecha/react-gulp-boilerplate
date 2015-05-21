@@ -50,18 +50,6 @@ var filePaths = {
     dest: './build'
 };
 
-function build(callback) {
-    runSequence('clean',
-        'lint:scripts',
-        ['build:scripts',
-            'build:styles',
-            'build:templates'
-        ],
-        'browser-sync',
-        callback
-    );
-}
-
 gulp.task('lint:scripts', function() {
     return gulp.src(filePaths.src.scripts.all)
         .pipe(jshint())
@@ -149,19 +137,42 @@ gulp.task('browser-sync', function() {
 });
 
 gulp.task('watch', function() {
-    build(function() {
+    var callback = function() {
         gulp.watch(filePaths.src.scripts.all, ['reload:scripts']);
         gulp.watch(filePaths.src.styles.all, ['reload:styles']);
         gulp.watch(filePaths.src.teplates.entry, ['reload:templates']);
 
         gutil.log(gutil.colors.green('Watching for changes...'));
-    });
+    };
+
+    runSequence(
+        'clean',
+        'lint:scripts',
+        [
+            'build:scripts',
+            'build:styles',
+            'build:templates'
+        ],
+        'browser-sync',
+        callback
+    );
 });
 
 gulp.task('build', function() {
-    build(function() {
+    var callback = function() {
         gutil.log(gutil.colors.green('Build complete.'));
-    });
+    };
+
+    runSequence(
+        'clean',
+        'lint:scripts',
+        [
+            'build:scripts',
+            'build:styles',
+            'build:templates'
+        ],
+        callback
+    );
 });
 
 gulp.task('default', ['watch']);
