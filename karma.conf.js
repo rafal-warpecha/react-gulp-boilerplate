@@ -8,7 +8,7 @@ module.exports = function(config) {
 
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-        frameworks: ['browserify', 'jasmine'],
+        frameworks: ['browserify', 'jasmine', 'source-map-support'],
 
         // list of files / patterns to load in the browser
         files: [
@@ -16,8 +16,9 @@ module.exports = function(config) {
         ],
 
         browserify: {
-            debug: false,
-            transform: ['babelify']
+            debug: true,
+            transform: ['babelify'],
+            paths: ['./node_modules', './src']
         },
 
         // preprocess matching files before serving them to the browser

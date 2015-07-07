@@ -58,6 +58,7 @@ gulp.task('lint:scripts', function() {
 
 gulp.task('build:scripts', function() {
     return browserify(filePaths.src.scripts.entry, {
+            paths: ['./node_modules', './src'],
             debug: env === 'development'
         })
         .transform(babelify)
@@ -101,13 +102,11 @@ gulp.task('reload:styles', ['build:styles'], function() {
 });
 
 gulp.task('build:templates', function() {
-    var replaceConfig = {
-        css: filePaths.src.styles.bundled,
-        js: filePaths.src.scripts.bundled
-    };
-
     return gulp.src(filePaths.src.teplates.entry)
-        .pipe(htmlreplace(replaceConfig))
+        .pipe(htmlreplace({
+            css: filePaths.src.styles.bundled,
+            js: filePaths.src.scripts.bundled
+        }))
         .pipe(gulp.dest(filePaths.dest));
 });
 
@@ -148,11 +147,7 @@ gulp.task('watch', function() {
     runSequence(
         'clean',
         'lint:scripts',
-        [
-            'build:scripts',
-            'build:styles',
-            'build:templates'
-        ],
+        ['build:scripts', 'build:styles', 'build:templates'],
         'browser-sync',
         callback
     );
@@ -166,13 +161,9 @@ gulp.task('build', function() {
     runSequence(
         'clean',
         'lint:scripts',
-        [
-            'build:scripts',
-            'build:styles',
-            'build:templates'
-        ],
+        ['build:scripts', 'build:styles', 'build:templates'],
         callback
     );
 });
 
-gulp.task('default', ['watch']);
+gulp.task('default', ['build']);

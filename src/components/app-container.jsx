@@ -1,6 +1,8 @@
-import React from './../../node_modules/react/react';
+'use strict';
 
-class AppContainer extends React.Component {
+import React from 'react';
+
+export default class AppContainer extends React.Component {
     render() {
         /* jshint ignore:start */
         /* jscs: disable */
@@ -13,5 +15,3 @@ class AppContainer extends React.Component {
         /* jscs: enable */
     }
 }
-
-export default AppContainer;

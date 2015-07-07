@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react/addons';
-import AppContainer from './../../src/components/app-container.jsx';
+import AppContainer from 'components/app-container.jsx';
 
 let TestUtils = React.addons.TestUtils;
 
